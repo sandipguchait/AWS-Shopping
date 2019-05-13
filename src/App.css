@@ -79,9 +79,9 @@ body {
 }
 
 .app-title {
-  font-weight: 300;
+  font-weight: bold;
   font-size: 1.5rem;
-  color: #f90;
+  color: #ff0;
   margin: -3px;
 }
 
@@ -92,7 +92,9 @@ body {
 }
 
 .app-user {
-  font-weight: 300;
+  font-weight: 500;
+  color: white !important;
+  font-style: italic;
   font-size: 1rem;
 }
 
@@ -154,6 +156,17 @@ body {
 
 .nav-link {
   text-decoration: none;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 1rem;
+  color:white !important;
+}
+
+.btn-color {
+  font-weight: bold !important;
+  font-style: italic !important;
+  font-size: 1rem !important;
+  color: black !important;
 }
 
 .profile-tabs > * {

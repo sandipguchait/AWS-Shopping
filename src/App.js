@@ -8,6 +8,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProfilePage from './pages/ProfilePage';
 import MarketPage from "./pages/MarketPage";
+import NavBar from './components/Navbar';
 
 class App extends React.Component {
   state = {
@@ -52,6 +53,8 @@ class App extends React.Component {
     ) : (
       <BrowserRouter>
         <React.Fragment>
+          {/* Navbar */}
+          <NavBar user={user}/>
           {/* Routes */}
           <div className="app-container">
             <Route exact path="/" component={HomePage} />
