@@ -2,6 +2,12 @@ import React from "react";
 import "./App.css";
 import { Auth, Hub } from 'aws-amplify';
 import { Authenticator, AmplifyTheme } from 'aws-amplify-react';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+// Components
+import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import MarketPage from "./pages/MarketPage";
 
 class App extends React.Component {
   state = {
@@ -43,7 +49,20 @@ class App extends React.Component {
 
     return !user ? (
       <Authenticator  theme={theme}/> 
-    ) : <div>App</div>
+    ) : (
+      <BrowserRouter>
+        <React.Fragment>
+          {/* Routes */}
+          <div className="app-container">
+            <Route exact path="/" component={HomePage} />
+            <Route path="/profile" component={ProfilePage} />
+            <Route path="/markets/:id" 
+                component={({ match }) => <MarketPage id={match.params.id} />} 
+            />
+          </div>
+        </React.Fragment>
+      </BrowserRouter>
+    )
   }
 }
 
