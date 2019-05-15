@@ -63,7 +63,7 @@ class App extends React.Component {
               <Route exact path="/" component={HomePage} />
               <Route path="/profile" component={ProfilePage} />
               <Route path="/markets/:id" 
-                  component={({ match }) => <MarketPage id={match.params.id} />} 
+                  component={({ match }) => <MarketPage user={user} id={match.params.id} />} 
               />
             </div>
           </React.Fragment>

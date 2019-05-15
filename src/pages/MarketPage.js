@@ -1,11 +1,103 @@
 import React from "react";
-// import { Loading, Tabs, Icon } from "element-react";
+import { API, graphqlOperation } from 'aws-amplify';
+import { getMarket } from '../graphql/queries';
+import { Loading, Tabs, Icon } from "element-react";
+import { Link } from 'react-router-dom';
+import NewProduct from '../components/NewProduct';
+import Product from '../components/Product';
+
 
 class MarketPage extends React.Component {
-  state = {};
+  state = {
+    market: null,
+    isLoading: true,
+    isMarketOwner: false
+  };
+
+  componentDidMount() {
+    this.handleGetMarket();
+  };
+
+  handleGetMarket = async() => {
+    const input = {
+      id: this.props.id
+    };
+    const result = await API.graphql(graphqlOperation(getMarket, input ))
+    this.setState({ 
+      market: result.data.getMarket,
+      isLoading: false
+    }, () => this.checkMarketOwner())
+  };
+
+  checkMarketOwner = () => {
+    const { user } = this.props;
+    const { market } = this.state;
+
+    if(user) {
+      this.setState({ isMarketOwner: user.username === market.owner })
+    }
+  };
+
+
 
   render() {
-    return <div>MarketPage {this.props.id} </div>;
+    const { market, isLoading , isMarketOwner } = this.state;
+
+    return isLoading ? (
+      <Loading fullscreen={true} />
+    ) : (
+        <React.Fragment>
+          {/* Back Button */}
+          <Link to="/" className="link">
+            Back to Markets List
+          </Link>
+
+          {/* Market MetaData */}
+          <span className="items-center pt-2">
+            <h2 className="mb-mr">{market.name}</h2>- {market.owner}
+          </span>
+          <div className="items-center pt-2">
+            <span style={{ color: 'var(--lightSquidInk', paddingBottom: '1em'}}>
+              <Icon name="date" className="icon" />
+              {market.createdAt}
+            </span>
+          </div>
+
+          {/* New Product Area */}
+          <Tabs type="border-card" value={ isMarketOwner ? "1" : "2" }>
+            { isMarketOwner && (
+              <Tabs.Pane
+                label={
+                  <>
+                    <Icon className="icon" name="plus" />
+                    Add Product
+                  </>
+                }
+                name="1"
+              >
+                <NewProduct />
+              </Tabs.Pane>
+            )}
+
+            {/* Products List */}
+            <Tabs.Pane
+              label={
+                <>
+                  <Icon name="menu" className="icon" />
+                  Products ({ market.products.items.length })
+                </>
+              }
+              name="2"
+            >
+              {/* <div className="product-list">
+                {market.product.items.map( product => (
+                  <Product product={product} />
+                ))}
+              </div> */}
+            </Tabs.Pane>
+          </Tabs>
+        </React.Fragment>
+    )
   }
 }
 
