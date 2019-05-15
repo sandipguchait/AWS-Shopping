@@ -31,12 +31,10 @@ const MarketList = ({ searchResults, searchTerm }) => {
         if(errors.length > 0) return <Errors errors={errors}/>
         if(loading || !data.listMarkets ) return <Loading fullscreen={true} />
         const markets = searchResults.length > 0 ? searchResults : data.listMarkets.items;
-        const searchmarkets = (searchTerm === '') ? data.listMarkets.items : markets ;
-
 
         return (
           <>
-            { (searchResults.length > 0 && searchTerm !== '') ? (
+            { searchResults.length > 0 ? (
               <h2 className="text-green">
                 <Icon type="success" name="check" className="icon" />
                 { searchResults.length } Results
@@ -47,7 +45,7 @@ const MarketList = ({ searchResults, searchTerm }) => {
               Markets
             </h2>
             )}
-            {searchmarkets.map( market => (
+            {markets.map( market => (
               <div key={market.id} className="my-2">
                 <Card 
                   bodyStyle={{
