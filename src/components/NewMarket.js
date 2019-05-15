@@ -3,6 +3,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createMarket } from '../graphql/mutations';
 import { Form, Button, Dialog, Input, Select, Notification } from 'element-react';
 import { UserContext } from '../App';
+import '../App.css';
 
 class NewMarket extends React.Component {
   state = {
@@ -59,6 +60,7 @@ class NewMarket extends React.Component {
             <Form inline={true} onSubmit={this.props.handleSearch}>
               <Form.Item>
                 <Input
+                  className="inputmobile"
                   value={this.props.searchTerm}
                   onChange={this.props.handleSearchChange}
                   placeholder="Search Markets.."
@@ -67,6 +69,7 @@ class NewMarket extends React.Component {
               <Form.Item>
                 <Button
                   type="info"
+                  className="buttonmobile"
                   icon="search"
                   onClick={this.props.handleSearch}
                   loading={this.props.isSearching}
@@ -76,6 +79,7 @@ class NewMarket extends React.Component {
               </Form.Item>
               <Form.Item>
                 <Button
+                  className="buttonmobile"
                   type="danger"
                   icon="circle-close"
                   onClick={this.props.handleClearSearch}
