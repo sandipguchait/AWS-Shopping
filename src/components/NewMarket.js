@@ -23,7 +23,6 @@ class NewMarket extends React.Component {
         tags: this.state.selectedTags
       };
       const result = await API.graphql(graphqlOperation(createMarket, { input }))
-      console.log(result)
       console.info(`Created market: id ${result.data.createMarket.id}`)
       this.setState({ name: "", selectedTags: [] })
     } catch(err) {
@@ -63,8 +62,6 @@ class NewMarket extends React.Component {
                   value={this.props.searchTerm}
                   onChange={this.props.handleSearchChange}
                   placeholder="Search Markets.."
-                  icon="circle-cross"
-                  onIconClick={this.props.handleClearSearch}
                   />
               </Form.Item>
               <Form.Item>
@@ -75,6 +72,15 @@ class NewMarket extends React.Component {
                   loading={this.props.isSearching}
                   >
                   Search
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="danger"
+                  icon="circle-close"
+                  onClick={this.props.handleClearSearch}
+                  >
+                  Clear
                 </Button>
               </Form.Item>
             </Form>

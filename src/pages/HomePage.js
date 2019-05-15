@@ -1,6 +1,8 @@
 import React from "react";
 import NewMarket from '../components/NewMarket';
 import MarketList from '../components/MarketList';
+import { searchMarkets } from '../graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
 
 class HomePage extends React.Component {
   state = {
@@ -13,10 +15,36 @@ class HomePage extends React.Component {
 
   handleClearSearch = () => this.setState({ searchTerm: "", searchResults: "" })
 
-  handleSearch = (event) => {
-    event.preventDefault();
+  // Search Function Using AWS Elastic Search
+  handleSearch = async (event) => {
+    try{
+      event.preventDefault();
+      this.setState({ isSearching: true })
+      const result = await API.graphql(graphqlOperation(searchMarkets, {
+        filter: {
+          or: [
+            { name: { match: this.state.searchTerm }},
+            { owner : { match: this.state.searchTerm }},
+            { tags : { match: this.state.searchTerm }}
+          ]
+        }, 
+        sort: {
+          field: "createdAt",
+          direction: "desc"
+        }
+      }));
+      this.setState({ 
+        searchResults: result.data.searchMarkets.items,
+        isSearching: false
+      })
+    } 
+    catch(err) {
+      console.error(err);
+    }
     
-  }
+  };
+
+
 
   render() {
     return (
@@ -28,7 +56,7 @@ class HomePage extends React.Component {
           handleClearSearch={this.handleClearSearch}
           handleSearch={this.handleSearch}
         />
-        <MarketList />
+        <MarketList  searchResults={this.state.searchResults} searchTerm={this.state.searchTerm} />
       </>
     )
   }
