@@ -39,6 +39,11 @@ class Product extends React.Component {
       })
     } catch(err) {
       console.error(err)
+      Notification.error({
+        title: "error",
+        message: " Error Updating Product",
+        type:"error"
+      })
     }
   };
 
@@ -56,10 +61,14 @@ class Product extends React.Component {
         message: " Product Deleted",
         type:"success"
       })
-      setTimeout(() => window.location.reload(), 2000)
     }
     catch(err) {
       console.err(err)
+      Notification.error({
+        title: "error",
+        message: " Error Deleting Product",
+        type:"error"
+      })
     }
   }
   

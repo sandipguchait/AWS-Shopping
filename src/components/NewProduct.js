@@ -22,6 +22,8 @@ const InitialState = {
 class NewProduct extends React.Component {
   state = {...InitialState };
 
+
+  //Creating Product
   handleAddProduct = async() => {
     try{
       this.setState({ isUploading: true })
@@ -60,6 +62,11 @@ class NewProduct extends React.Component {
     }
     catch (err) {
       console.error(err)
+      Notification.error({
+        title: "error",
+        message: " Error Creating Product",
+        type:"error"
+      })
     }
   };
 
