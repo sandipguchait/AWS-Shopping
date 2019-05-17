@@ -1,9 +1,19 @@
-
 var express = require('express')
 var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 require('dotenv').config()
 var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+var AWS = require("aws-sdk")
+
+const config = {
+  accessKeyId: "AKIAJGI36PTDPKTJVIMA",
+  secretAccessKey: "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",
+  region: "us-west-2",
+  adminEmail: "senzakash101@gmail.com"
+};
+
+// Sending Email Service from AWS
+var ses = new AWS.SES(config)
 
 // declare a new express app
 var app = express()
@@ -11,20 +21,23 @@ app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
 // Enable CORS for all methods
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 });
 
 
-/****************************
-* Example post method *
-****************************/
-
-app.post('/charge', async(req, res) => {
-  const { token } = req.body;
-  const { currency, amount, description } = req.body.charge;
+// CHARGING FUNCTION TO CHARGE USING STRIPE
+const chargeHandler = async (req, res, next) => {
+  const {
+    token
+  } = req.body;
+  const {
+    currency,
+    amount,
+    description
+  } = req.body.charge;
 
   try {
     const charge = await stripe.charges.create({
@@ -33,20 +46,65 @@ app.post('/charge', async(req, res) => {
       currency,
       description
     })
-    res.json(charge)
-  } catch(err) {
-    res.status(500).json({ error: err })
+    if (charge.status === "succeeded") {
+      //Sending details to next middleware
+      req.charge = charge;
+      req.description = description;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err
+    })
   }
-});
+};
+
+// EMAIL SENDING TO USERS
+const emailHandler = (req, res) => {
+  const {
+    charge
+  } = req;
+
+  ses.sendEmail({
+    Source: config.adminEmail,
+    ReturnPath: config.adminEmail,
+    Destination: {
+      ToAddresses: [config.adminEmail]
+    },
+    Message: {
+      Subject: {
+        Data: ' Order Details - AWS-SHOPPING'
+      },
+      Body: {
+        Html: {
+          Charset: 'UTF-8',
+          Data: '<h3>Order Processed</h3>'
+        }
+      }
+    }
+  }, (err, data) => {
+    if (err) return res.status(500).json({
+      error: err
+    })
+    res.json({
+      message: "Order Processed Successfully",
+      charge,
+      data
+    });
+  })
+};
+
+//Post request with two middlewares
+app.post('/charge', chargeHandler, emailHandler);
 
 
 /****************************
-* Example post method *
-****************************/
+ * Example post method *
+ ****************************/
 
 
-app.listen(3000, function() {
-    console.log("App started")
+app.listen(3000, function () {
+  console.log("App started")
 });
 
 // Export the app object. When executing the application local this does nothing. However,
