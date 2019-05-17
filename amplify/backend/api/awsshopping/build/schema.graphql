@@ -1,0 +1,360 @@
+type Market {
+  id: ID!
+  name: String!
+  products(filter: ModelProductFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelProductConnection
+  tags: [String]
+  owner: String!
+  createdAt: String
+}
+
+type Product {
+  id: ID!
+  description: String!
+  market: Market
+  file: S3Object!
+  price: Float!
+  shipped: Boolean!
+  owner: String
+  createdAt: String
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  registered: Boolean
+  orders(filter: ModelOrderFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelOrderConnection
+}
+
+type Order {
+  id: ID!
+  product: Product
+  user: User
+  shippingAddress: ShippingAddress
+  createdAt: String
+}
+
+type ShippingAddress {
+  city: String!
+  country: String!
+  address_line1: String!
+  address_state: String!
+  address_zip: String!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelMarketConnection {
+  items: [Market]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelMarketFilterInput {
+  id: ModelIDFilterInput
+  name: ModelStringFilterInput
+  tags: ModelStringFilterInput
+  owner: ModelStringFilterInput
+  createdAt: ModelStringFilterInput
+  and: [ModelMarketFilterInput]
+  or: [ModelMarketFilterInput]
+  not: ModelMarketFilterInput
+}
+
+type Query {
+  getMarket(id: ID!): Market
+  listMarkets(filter: ModelMarketFilterInput, limit: Int, nextToken: String): ModelMarketConnection
+  getProduct(id: ID!): Product
+  listProducts(filter: ModelProductFilterInput, limit: Int, nextToken: String): ModelProductConnection
+  getUser(id: ID!): User
+  searchMarkets(filter: SearchableMarketFilterInput, sort: SearchableMarketSortInput, limit: Int, nextToken: Int): SearchableMarketConnection
+}
+
+input CreateMarketInput {
+  id: ID
+  name: String!
+  tags: [String]
+  owner: String!
+  createdAt: String
+}
+
+input UpdateMarketInput {
+  id: ID!
+  name: String
+  tags: [String]
+  owner: String
+  createdAt: String
+}
+
+input DeleteMarketInput {
+  id: ID
+}
+
+type Mutation {
+  createMarket(input: CreateMarketInput!): Market
+  updateMarket(input: UpdateMarketInput!): Market
+  deleteMarket(input: DeleteMarketInput!): Market
+  createProduct(input: CreateProductInput!): Product
+  updateProduct(input: UpdateProductInput!): Product
+  deleteProduct(input: DeleteProductInput!): Product
+  registerUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): User
+  createOrder(input: CreateOrderInput!): Order
+}
+
+type Subscription {
+  onCreateMarket: Market @aws_subscribe(mutations: ["createMarket"])
+  onUpdateMarket: Market @aws_subscribe(mutations: ["updateMarket"])
+  onDeleteMarket: Market @aws_subscribe(mutations: ["deleteMarket"])
+  onCreateProduct: Product @aws_subscribe(mutations: ["createProduct"])
+  onUpdateProduct: Product @aws_subscribe(mutations: ["updateProduct"])
+  onDeleteProduct: Product @aws_subscribe(mutations: ["deleteProduct"])
+}
+
+input S3ObjectInput {
+  bucket: String!
+  region: String!
+  key: String!
+}
+
+type ModelProductConnection {
+  items: [Product]
+  nextToken: String
+}
+
+input ModelProductFilterInput {
+  id: ModelIDFilterInput
+  description: ModelStringFilterInput
+  price: ModelFloatFilterInput
+  shipped: ModelBooleanFilterInput
+  owner: ModelStringFilterInput
+  createdAt: ModelStringFilterInput
+  and: [ModelProductFilterInput]
+  or: [ModelProductFilterInput]
+  not: ModelProductFilterInput
+}
+
+input CreateProductInput {
+  id: ID
+  description: String!
+  file: S3ObjectInput!
+  price: Float!
+  shipped: Boolean!
+  owner: String
+  createdAt: String
+  productMarketId: ID
+}
+
+input UpdateProductInput {
+  id: ID!
+  description: String
+  file: S3ObjectInput
+  price: Float
+  shipped: Boolean
+  owner: String
+  createdAt: String
+  productMarketId: ID
+}
+
+input DeleteProductInput {
+  id: ID
+}
+
+input ModelUserFilterInput {
+  id: ModelIDFilterInput
+  username: ModelStringFilterInput
+  email: ModelStringFilterInput
+  registered: ModelBooleanFilterInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  username: String!
+  email: String!
+  registered: Boolean
+}
+
+input UpdateUserInput {
+  id: ID!
+  username: String
+  email: String
+  registered: Boolean
+}
+
+input ShippingAddressInput {
+  city: String!
+  country: String!
+  address_line1: String!
+  address_state: String!
+  address_zip: String!
+}
+
+input ModelOrderFilterInput {
+  id: ModelIDFilterInput
+  createdAt: ModelStringFilterInput
+  and: [ModelOrderFilterInput]
+  or: [ModelOrderFilterInput]
+  not: ModelOrderFilterInput
+}
+
+input CreateOrderInput {
+  id: ID
+  shippingAddress: ShippingAddressInput
+  createdAt: String
+  orderProductId: ID
+  orderUserId: ID
+}
+
+type ModelOrderConnection {
+  items: [Order]
+  nextToken: String
+}
+
+input SearchableStringFilterInput {
+  ne: String
+  eq: String
+  match: String
+  matchPhrase: String
+  matchPhrasePrefix: String
+  multiMatch: String
+  exists: Boolean
+  wildcard: String
+  regexp: String
+}
+
+input SearchableIDFilterInput {
+  ne: ID
+  eq: ID
+  match: ID
+  matchPhrase: ID
+  matchPhrasePrefix: ID
+  multiMatch: ID
+  exists: Boolean
+  wildcard: ID
+  regexp: ID
+}
+
+input SearchableIntFilterInput {
+  ne: Int
+  gt: Int
+  lt: Int
+  gte: Int
+  lte: Int
+  eq: Int
+  range: [Int]
+}
+
+input SearchableFloatFilterInput {
+  ne: Float
+  gt: Float
+  lt: Float
+  gte: Float
+  lte: Float
+  eq: Float
+  range: [Float]
+}
+
+input SearchableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input SearchableMarketFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  tags: SearchableStringFilterInput
+  owner: SearchableStringFilterInput
+  createdAt: SearchableStringFilterInput
+  and: [SearchableMarketFilterInput]
+  or: [SearchableMarketFilterInput]
+  not: SearchableMarketFilterInput
+}
+
+enum SearchableSortDirection {
+  asc
+  desc
+}
+
+enum SearchableMarketSortableFields {
+  id
+  name
+  tags
+  owner
+  createdAt
+}
+
+input SearchableMarketSortInput {
+  field: SearchableMarketSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableMarketConnection {
+  items: [Market]
+  nextToken: String
+}

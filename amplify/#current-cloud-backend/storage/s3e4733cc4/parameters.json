@@ -1,0 +1,13 @@
+{
+    "bucketName": "aws-shopping98ad07946b37472b85ee9800c2ebcc63",
+    "authPolicyName": "s3_amplify_e4733cc4",
+    "unauthPolicyName": "s3_amplify_e4733cc4",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authPermissions": "rw",
+    "unauthPermissions": ""
+}

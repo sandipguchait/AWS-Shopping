@@ -1,0 +1,12 @@
+{
+    "AppSyncApiName": "awsshopping",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito0c584901",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "aws-shopping-20190511140549-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/d7fc7c32786c9ab80ee10d214538e2847046a094"
+}

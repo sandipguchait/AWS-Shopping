@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "aws-shopping-20190511140549-authRole",
+            "UnauthRoleArn": "arn:aws:iam::923634483491:role/aws-shopping-20190511140549-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::923634483491:role/aws-shopping-20190511140549-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "aws-shopping-20190511140549-deployment",
+            "UnauthRoleName": "aws-shopping-20190511140549-unauthRole",
+            "StackName": "aws-shopping-20190511140549",
+            "StackId": "arn:aws:cloudformation:ap-south-1:923634483491:stack/aws-shopping-20190511140549/c8d81000-73c7-11e9-b773-02a35fd872f4"
+        },
+        "categories": {
+            "auth": {
+                "cognito0c584901": {}
+            }
+        }
+    }
+}

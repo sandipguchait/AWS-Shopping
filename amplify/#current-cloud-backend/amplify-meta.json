@@ -1,0 +1,118 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "aws-shopping-20190511140549-authRole",
+			"UnauthRoleArn": "arn:aws:iam::923634483491:role/aws-shopping-20190511140549-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::923634483491:role/aws-shopping-20190511140549-authRole",
+			"Region": "ap-south-1",
+			"DeploymentBucketName": "aws-shopping-20190511140549-deployment",
+			"UnauthRoleName": "aws-shopping-20190511140549-unauthRole",
+			"StackName": "aws-shopping-20190511140549",
+			"StackId": "arn:aws:cloudformation:ap-south-1:923634483491:stack/aws-shopping-20190511140549/c8d81000-73c7-11e9-b773-02a35fd872f4"
+		}
+	},
+	"auth": {
+		"cognito0c584901": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/auth/cognito0c584901-cloudformation-template.yml",
+				"logicalId": "authcognito0c584901"
+			},
+			"lastPushTimeStamp": "2019-05-17T15:35:56.486Z",
+			"output": {
+				"AppClientSecret": "7e76gmodubu9o2sag6b0npk4hfo2bo884c7iqeg0ju9r3i91fj4",
+				"UserPoolId": "ap-south-1_rNu6hWfu8",
+				"AppClientIDWeb": "1bpapb9bavlpjr0n6is58410qv",
+				"AppClientID": "4eslia7el3s7tdh7ilq9jfr3nm",
+				"IdentityPoolId": "ap-south-1:cf017aa9-39a4-4bb0-9663-4ae6c76b06a5",
+				"IdentityPoolName": "cognito0c584901_identitypool_0c584901__dev",
+				"UserPoolName": "cognito0c584901_userpool_0c584901"
+			},
+			"lastPushDirHash": "mUmUWXbTrbZB1pu0yIu7egmsC9Y="
+		}
+	},
+	"api": {
+		"awsshopping": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "stsxpykofjaphhxriwj4knzj4y",
+				"GraphQLAPIEndpointOutput": "https://zovv2ru2zrdnldiajv6mf6n634.appsync-api.ap-south-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-qoa2glragjgc7bo3dabvio3qoq",
+				"AuthCognitoUserPoolIdOutput": "ap-south-1_rNu6hWfu8",
+				"AuthCognitoUserPoolNativeClientId": "See UserPool: ap-south-1_rNu6hWfu8",
+				"AuthCognitoUserPoolJSClientId": "See UserPool: ap-south-1_rNu6hWfu8"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apiawsshopping"
+			},
+			"lastPushTimeStamp": "2019-05-17T15:35:56.488Z",
+			"lastPushDirHash": "HN2rGnphmT96j2+Qw0JK6TibcfM="
+		},
+		"orderlambda": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "orderlambda",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			],
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/api/orderlambda-cloudformation-template.json",
+				"logicalId": "apiorderlambda"
+			},
+			"lastPushTimeStamp": "2019-05-17T15:35:56.489Z",
+			"output": {
+				"ApiName": "orderlambda",
+				"RootUrl": "https://05wn0zwp24.execute-api.ap-south-1.amazonaws.com/dev"
+			},
+			"lastPushDirHash": "m0oNcnNFNm0rhnH6InHy0gAxaCM="
+		}
+	},
+	"storage": {
+		"s3e4733cc4": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+				"logicalId": "storages3e4733cc4"
+			},
+			"lastPushTimeStamp": "2019-05-17T15:35:56.491Z",
+			"output": {
+				"BucketName": "aws-shopping98ad07946b37472b85ee9800c2ebcc63-dev",
+				"Region": "ap-south-1"
+			},
+			"lastPushDirHash": "Yu6DyOwN078q0ywDD9AkC0dJrn4="
+		}
+	},
+	"function": {
+		"orderlambda": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [],
+			"lastBuildTimeStamp": "2019-05-17T15:08:59.246Z",
+			"lastPackageTimeStamp": "2019-05-17T15:34:20.259Z",
+			"distZipFilename": "orderlambda-1558107258-latest-build.zip",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/function/orderlambda-cloudformation-template.json",
+				"logicalId": "functionorderlambda"
+			},
+			"lastPushTimeStamp": "2019-05-17T15:35:56.496Z",
+			"output": {
+				"Region": "ap-south-1",
+				"Arn": "arn:aws:lambda:ap-south-1:923634483491:function:orderlambda-dev",
+				"Name": "orderlambda-dev"
+			},
+			"lastPushDirHash": "PhCup/WFpDmwcq1f9U5r0A+yE/o="
+		}
+	}
+}
