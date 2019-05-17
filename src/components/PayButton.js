@@ -9,21 +9,28 @@ const stripeConfig = {
 }
 
 const PayButton = ({ product, user }) => {
+
   const handleCharge = async token => {
     //Using Lambds function making backend a post request to '/charge'
     //using post to post stripe payment data from frontend to backend -> posting
-  
+    //orderlambda is the name of the function on backend
     try {
      const result =  await API.post('orderlambda', '/charge', { 
+       //Details that are send to the backend
         body: {
-          token
+          token,
+          charge: {
+            currency: stripeConfig.currency,
+            amount: product.price,
+            description: product.description
+          }
         }
       })
       console.log(result);
     } catch(err) {
       console.error(err)
     }
-  }
+  };
 
   return (
     <StripeCheckout 
