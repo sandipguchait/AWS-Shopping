@@ -100,8 +100,8 @@
 			"build": true,
 			"dependsOn": [],
 			"lastBuildTimeStamp": "2019-05-17T18:04:38.955Z",
-			"lastPackageTimeStamp": "2019-05-18T09:00:35.181Z",
-			"distZipFilename": "orderlambda-1558170031-latest-build.zip",
+			"lastPackageTimeStamp": "2019-05-18T12:56:50.835Z",
+			"distZipFilename": "orderlambda-1558184207-latest-build.zip",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/aws-shopping-20190511140549-deployment/amplify-cfn-templates/function/orderlambda-cloudformation-template.json",
 				"logicalId": "functionorderlambda"

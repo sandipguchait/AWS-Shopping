@@ -52,7 +52,7 @@ class NewProduct extends React.Component {
         file
       };
       const result = await API.graphql(graphqlOperation(createProduct,{ input }))
-      console.log(result)
+      console.log('from newproduct',result)
       Notification({
         title: "Success",
         message: " Product successfully created",
@@ -61,7 +61,7 @@ class NewProduct extends React.Component {
       this.setState({...InitialState})
     }
     catch (err) {
-      console.error(err)
+      console.error('Error from newproduct', err)
       Notification.error({
         title: "error",
         message: " Error Creating Product",

@@ -6,8 +6,8 @@ var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 var AWS = require("aws-sdk")
 
 const config = {
-  accessKeyId: "AKIAJJK37DI6GIZYVJEA",
-  secretAccessKey: "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",
+  accessKeyId: "AKIAIXOCUYBUE6R5S7XQ",
+  secretAccessKey: "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",
   region: "us-west-2",
   adminEmail: "senzakash101@gmail.com"
 };

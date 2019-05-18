@@ -2,7 +2,7 @@ import React from "react";
 import StripeCheckout from 'react-stripe-checkout';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getUser } from '../graphql/queries';
-// import { Notification, Message } from "element-react";
+import { Notification, Message } from "element-react";
 
 const stripeConfig = {
   currency: "USD",
@@ -15,8 +15,8 @@ const PayButton = ({ product, user }) => {
   const getOwnerEmail = async ownerId => {
     try{
       const input = { id: ownerId };
-      const result = await API.graphql(graphqlOperation(getUser, { input: input }))
-      return result.data.getUser.email
+      const result = await API.graphql(graphqlOperation(getUser, { input } ))
+      return result.data.getUser.id
     } catch (err) {
       console.error('Error fetching Product Owner Email', err)
     }
@@ -45,9 +45,17 @@ const PayButton = ({ product, user }) => {
           }
         }
       })
-      console.log(result);
+      Notification({
+        title: "Success",
+        message: "Successfully Ordered",
+        type:"success"
+      })
     } catch(err) {
-      console.error(err)
+      Notification.error({
+        title: "error",
+        message: "Payment Failed",
+        type:"error"
+      })
     }
   };
 

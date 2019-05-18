@@ -38,7 +38,7 @@ class Product extends React.Component {
         type:"success"
       })
     } catch(err) {
-      console.error(err)
+      console.error('Error from product',err)
       Notification.error({
         title: "error",
         message: " Error Updating Product",
@@ -63,7 +63,7 @@ class Product extends React.Component {
       })
     }
     catch(err) {
-      console.err(err)
+      console.err(" Error Updating Product",err)
       Notification.error({
         title: "error",
         message: " Error Deleting Product",
