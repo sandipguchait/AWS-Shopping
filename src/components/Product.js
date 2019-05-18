@@ -30,7 +30,7 @@ class Product extends React.Component {
         shipped: homedelivery
       }
 
-      const result = await API.graphql(graphqlOperation( updateProduct, { input }));
+      const result = await API.graphql(graphqlOperation( updateProduct, { input: input }));
       console.log(" updated ",{result})
       Notification({
         title: "Success",
@@ -55,7 +55,7 @@ class Product extends React.Component {
       const input = {
         id: productId
       }
-      await API.graphql(graphqlOperation( deleteProduct, { input }));
+      await API.graphql(graphqlOperation( deleteProduct, { input: input  }));
       Notification({
         title: "Success",
         message: " Product Deleted",

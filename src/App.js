@@ -50,6 +50,7 @@ class App extends React.Component {
     }
   };
 
+  // Registering new user and getting their details
   registerNewUser = async signInData => {
     const getUserInput = {
       id: signInData.signInUserSession.idToken.payload.sub
@@ -88,7 +89,7 @@ class App extends React.Component {
             {/* Routes */}
             <div className="app-container">
               <Route exact path="/" component={HomePage} />
-              <Route path="/profile" component={ProfilePage} />
+              <Route path="/profile" component={() => <ProfilePage user={user} />} />
               <Route path="/markets/:id" 
                   component={({ match }) => <MarketPage user={user} id={match.params.id} />} 
               />

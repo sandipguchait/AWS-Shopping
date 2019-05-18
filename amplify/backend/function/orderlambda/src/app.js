@@ -6,8 +6,8 @@ var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 var AWS = require("aws-sdk")
 
 const config = {
-  accessKeyId: "AKIAJGI36PTDPKTJVIMA",
-  secretAccessKey: "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",
+  accessKeyId: "AKIAJJK37DI6GIZYVJEA",
+  secretAccessKey: "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",
   region: "us-west-2",
   adminEmail: "senzakash101@gmail.com"
 };
@@ -50,6 +50,7 @@ const chargeHandler = async (req, res, next) => {
       //Sending details to next middleware
       req.charge = charge;
       req.description = description;
+      req.email = req.body.email;
       next();
     }
   } catch (err) {
@@ -59,10 +60,12 @@ const chargeHandler = async (req, res, next) => {
   }
 };
 
+const convertCentsToDollars = price => ( price / 100).toFixed(2);
+
 // EMAIL SENDING TO USERS
 const emailHandler = (req, res) => {
   const {
-    charge
+    charge, description, email: { shipped, customerEmail, ownerEmail}
   } = req;
 
   ses.sendEmail({
@@ -78,7 +81,27 @@ const emailHandler = (req, res) => {
       Body: {
         Html: {
           Charset: 'UTF-8',
-          Data: '<h3>Order Processed</h3>'
+          Data: `
+            <h3>Order Processed</h3>
+            <p><span style="font-weight: bold" >${description}</span> - $${convertCentsToDollars(charge.amount)}</p>
+            <p>Customer Email: <a href="mailto:${customerEmail}">${customerEmail}</a></p>
+            <p>Contact your seller: <a href="mailto:${ownerEmail}">${ownerEmail}</a></p>
+
+            ${ shipped ? 
+               `<h4>Mailing Address</h4>
+               <p>${charge.source.name}</p>
+               <p>${charge.source.address_line1}</p>
+               <p>${charge.source.address_city}, ${charge.source.address_state} ${charge.source.address_zip}</p>
+               ` : "Emailed Product"
+            }
+
+            <p style="font-style: italic; color: grey;">
+              ${ shipped ? 
+                  'Your product will be shipped in 2-3 days':
+                  'Check your verified email for your emailed product'
+              }
+            </p>
+          `
         }
       }
     }

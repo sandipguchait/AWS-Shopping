@@ -23,7 +23,7 @@ class NewMarket extends React.Component {
         owner: user.username,
         tags: this.state.selectedTags
       };
-      const result = await API.graphql(graphqlOperation(createMarket, { input }))
+      const result = await API.graphql(graphqlOperation(createMarket, { input: input }))
       console.info(`Created market: id ${result.data.createMarket.id}`)
       this.setState({ name: "", selectedTags: [] })
     } catch(err) {

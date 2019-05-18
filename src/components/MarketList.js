@@ -12,6 +12,7 @@ import Errors from './Error';
 const MarketList = ({ searchResults, searchTerm }) => {
 
   const onNewmarket = ( prevQuery, newdata ) => {
+    //shallow copy
     let updatedQuery = {...prevQuery};
     const updatedMarketList = [
       newdata.onCreateMarket,
